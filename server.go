@@ -7,6 +7,7 @@ import (
 	"temppaste/api/middleware"
 	"temppaste/api/route"
 	"temppaste/database"
+	"temppaste/database/paste"
 	"temppaste/internal/app"
 	"temppaste/internal/app/shutdown"
 	"temppaste/internal/parser/fibererrorhandler"
@@ -20,7 +21,7 @@ import (
 //
 // It also registers the application shutdown, so it can exit cleanly when "Ctrl + C" is pressed.
 func startFiber() {
-	db, errDBInit := database.NewDB()
+	db, errDBInit := database.NewDB(paste.NewSchema())
 	if errDBInit != nil {
 		log.Fatalln(errDBInit)
 	}
