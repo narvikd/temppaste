@@ -1,9 +1,9 @@
 package paste
 
 import (
+	"errors"
 	"github.com/google/uuid"
 	"github.com/hashicorp/go-memdb"
-	"log"
 	"temppaste/pkg/errorskit"
 	"time"
 )
@@ -33,60 +33,49 @@ func NewSchema() *memdb.DBSchema {
 	return schema
 }
 
-// GetAllPastes returns a slice with all the DB's pastes.
-func GetAllPastes(db *memdb.MemDB) ([]Paste, error) {
-	var pastes []Paste
-
+func GetPaste(db *memdb.MemDB, id string) (*Paste, error) {
 	txn := db.Txn(false) // Create a read transaction
-	defer txn.Abort()
-
-	resultIterator, err := txn.Get("paste", "id")
+	defer txn.Abort()    // Aborts in case of an error
+	raw, err := txn.First("paste", "id", id)
 	if err != nil {
-		return nil, errorskit.Wrap(err, "couldn't get all posts")
+		return nil, errorskit.Wrap(err, "couldn't get post posts")
 	}
-
-	for obj := resultIterator.Next(); obj != nil; obj = resultIterator.Next() {
-		o := obj.(*Paste)
-		paste := Paste{
-			Id:      o.Id,
-			Name:    o.Name,
-			Content: o.Content,
-		}
-		pastes = append(pastes, paste)
+	if raw == nil {
+		return nil, errors.New("paste not found")
 	}
-
-	return pastes, nil
+	return raw.(*Paste), nil
 }
 
 // NewPaste accepts a Paste pointer to create a new paste in the DB.
-func NewPaste(db *memdb.MemDB, paste *Paste) error {
+func NewPaste(db *memdb.MemDB, paste *Paste) (string, error) {
 	const pasteDelTime = 5 * time.Minute
-	paste.Id = uuid.New().String() // Sets the ID
+	id := uuid.New().String()
+	paste.Id = id // Sets the ID
 
 	txn := db.Txn(true) // Create a read transaction
 	err := txn.Insert("paste", paste)
 	if err != nil {
-		return errorskit.Wrap(err, "couldn't insert paste")
+		return id, errorskit.Wrap(err, "couldn't insert paste")
 	}
 	txn.Commit()
 
 	deletePasteAfterTime(db, paste, pasteDelTime)
-	return nil
+	return id, nil
 }
 
 // deletePasteAfterTime wraps DeletePaste in a go func to delete the just created paste after X time.
 func deletePasteAfterTime(db *memdb.MemDB, paste *Paste, duration time.Duration) {
 	go func() {
 		time.Sleep(duration)
-		errDelete := DeletePaste(db, paste)
+		errDelete := deletePaste(db, paste)
 		if errDelete != nil {
-			log.Println(errorskit.Wrap(errDelete, "couldn't delete paste"))
+			errorskit.LogWrap(errDelete, "couldn't delete paste")
 		}
 	}()
 }
 
-// DeletePaste deletes a Paste passed as pointer.
-func DeletePaste(db *memdb.MemDB, paste *Paste) error {
+// deletePaste deletes the Paste passed as pointer.
+func deletePaste(db *memdb.MemDB, paste *Paste) error {
 	txn := db.Txn(true) // Create a read transaction
 	err := txn.Delete("paste", paste)
 	if err != nil {

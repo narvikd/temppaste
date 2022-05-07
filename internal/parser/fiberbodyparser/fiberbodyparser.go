@@ -3,7 +3,6 @@ package fiberbodyparser
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 	"temppaste/pkg/errorskit"
 	"temppaste/pkg/stringkit"
@@ -37,7 +36,7 @@ func Parse(fiberCtx *fiber.Ctx, s interface{}) error {
 		}
 
 		if errBodyParser != nil {
-			log.Println(errorskit.Wrap(errBodyParser, "body couldn't be parsed on ParseFiberBody"))
+			errorskit.LogWrap(errBodyParser, "body couldn't be parsed on ParseFiberBody")
 		}
 
 		return errors.New("server couldn't process the request")

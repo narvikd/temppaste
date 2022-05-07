@@ -24,6 +24,6 @@ func Register(app *app.App) {
 }
 
 func routes(app *app.App, route *AppCtx) {
-	app.Get("paste", route.getAll)
-	app.Post("paste", route.newPaste)
+	app.Get("paste/:id", route.getPaste)
+	app.Post("paste", route.createPaste)
 }
