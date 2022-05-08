@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  api:
+  web:
     image: temppaste:latest
-    container_name: temppaste-api
+    container_name: temppaste
     networks:
       - temppaste
 networks:

@@ -1,0 +1,122 @@
+:root {
+    --primary-color: #222831;
+    --secondary-color: #DDDDDD;
+    --tertiary-color: #5c82b4;
+    --textarea-background-color: #0e0e0e;
+}
+
+html {
+    font-size: 62.5%; /** 1REM = 10pX **/
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    scroll-behavior: smooth;
+    color: white;
+    background-color: var(--primary-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+    height: 100%;
+    max-height: 100%;
+    font-size: 1.6rem;
+}
+
+ul {
+    margin-top: 0;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn {
+    margin-top: 4rem;
+}
+
+button {
+    display: inline-block;
+    position: relative;
+    width: auto;
+    padding: 7px 5rem;
+    color: white;
+    background-color: var(--tertiary-color);
+    border: 1px solid var(--tertiary-color);
+    border-radius: 3px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+button:hover {
+    text-decoration: none;
+    background-color: var(--tertiary-color);
+}
+
+button:active {
+    top: 1px;
+}
+
+.form {
+    margin-top: 15px;
+    width: 50%;
+    height: 70vh;
+}
+
+textarea {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    border-radius: 1rem;
+    color: var(--secondary-color);
+    background-color: var(--textarea-background-color);
+    border: 1px solid var(--textarea-background-color);
+    font-family: "SF Mono", "Fira Mono", Monaco, Menlo, Consolas, monospace;
+    font-size: 1.2rem;
+    line-height: 1.7rem;
+    resize: none;
+}
+
+textarea:focus {
+    outline: none !important;
+    border-color: var(--textarea-background-color);
+//box-shadow: 0 0 10px var(--textarea-background-color);
+}
+
+@media screen and (max-width: 1400px) {
+    .form {
+        width: 60%;
+        height: 65vh;
+    }
+}
+
+@media screen and (max-width: 889px) {
+    .form {
+        width: 80%;
+        height: 60vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .form {
+        height: 55vh;
+    }
+}
+@media screen and (max-width: 600px) {
+    .form {
+        width: 90%;
+        height: 45vh;
+    }
+}
+
