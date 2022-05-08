@@ -4,9 +4,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
 	"temppaste/database/paste"
+	"temppaste/internal/fiberparser/customvalidator"
+	"temppaste/internal/fiberparser/fiberbodyparser"
 	"temppaste/internal/jsonreturn"
-	"temppaste/internal/parser/customvalidator"
-	"temppaste/internal/parser/fiberbodyparser"
 	"temppaste/pkg/errorskit"
 )
 

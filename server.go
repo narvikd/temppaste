@@ -11,7 +11,7 @@ import (
 	"temppaste/database/paste"
 	"temppaste/internal/app"
 	"temppaste/internal/app/shutdown"
-	"temppaste/internal/parser/fibererrorhandler"
+	"temppaste/internal/fiberparser/fibererrorhandler"
 	"temppaste/pkg/errorskit"
 	"time"
 )
