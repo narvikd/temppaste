@@ -15,6 +15,25 @@ function newPaste() {
             return res.json()
         })
         .then((data) => {
-            window.location.href= `/paste/${data.data}/raw`;
+            if (data.success === false) {
+                displayErr(data.message)
+            } else {
+                window.location.href= `/paste/${data.data}/raw`;
+            }
+        })
+        .catch((e) => {
+            displayErr(e)
         });
+}
+
+function displayErr(title) {
+    Swal.fire({
+        title: capitalize(title),
+        icon: 'error',
+        confirmButtonText: 'Ok'
+    });
+}
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
