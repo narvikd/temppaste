@@ -15,6 +15,6 @@ function newPaste() {
             return res.json()
         })
         .then((data) => {
-            window.location.href= `/paste/${data.data}/raw`;
+            window.location.href= `/paste/${data.data}`;
         });
 }

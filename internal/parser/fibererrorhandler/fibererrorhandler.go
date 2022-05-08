@@ -16,7 +16,5 @@ import (
 func Register(ctx *fiber.Ctx) error {
 	// Set Content-Type: text/plain; charset=utf-8
 	ctx.Set(fiber.HeaderContentType, fiber.MIMETextPlainCharsetUTF8)
-
-	// Return status code with error message
 	return ctx.Redirect("/")
 }
