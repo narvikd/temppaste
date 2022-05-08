@@ -20,11 +20,11 @@ func (a *AppCtx) getPaste(fiberCtx *fiber.Ctx) error {
 		if err.Error() == "paste not found" {
 			return jsonreturn.NotFound(fiberCtx, err.Error())
 		}
+		errorskit.LogWrap(err, "getPasteRaw endpoint")
 
-		errorskit.LogWrap(err, "get endpoint")
 		return jsonreturn.ServerError(fiberCtx, "couldn't get paste")
 	}
-	return jsonreturn.OK(fiberCtx, "paste retrieved successfully", p)
+	return fiberCtx.Status(fiber.StatusOK).SendString(p.Content)
 }
 
 func (a *AppCtx) createPaste(fiberCtx *fiber.Ctx) error {
@@ -41,7 +41,7 @@ func (a *AppCtx) createPaste(fiberCtx *fiber.Ctx) error {
 
 	id, err := paste.NewPaste(a.DB, model)
 	if err != nil {
-		errorskit.LogWrap(err, "newPaste endpoint")
+		errorskit.LogWrap(err, "createPaste endpoint")
 		return jsonreturn.BadRequest(fiberCtx, "couldn't create paste")
 	}
 

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"embed"
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
 )
@@ -12,5 +13,6 @@ import (
 // This way the application can avoid the use of global variables.
 type App struct {
 	*fiber.App
-	DB *memdb.MemDB
+	DB           *memdb.MemDB
+	PublicFolder embed.FS
 }
