@@ -4,6 +4,7 @@ import (
 	"embed"
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
+	"github.com/narvikd/fiberparser"
 	"log"
 	"temppaste/api/middleware"
 	"temppaste/api/route"
@@ -11,7 +12,6 @@ import (
 	"temppaste/database/paste"
 	"temppaste/internal/app"
 	"temppaste/internal/app/shutdown"
-	"temppaste/internal/parser/fibererrorhandler"
 	"temppaste/pkg/errorskit"
 	"time"
 )
@@ -47,7 +47,7 @@ func newApp(db *memdb.MemDB, publicFolder embed.FS) *app.App {
 			EnablePrintRoutes: false,
 			IdleTimeout:       time.Second * 5, // Max time to wait for the next request when keep-alive is enabled.
 			ErrorHandler: func(ctx *fiber.Ctx, err error) error {
-				return fibererrorhandler.Register(ctx)
+				return fiberparser.RegisterErrorHandler(ctx)
 			},
 		}),
 		DB:           db,
