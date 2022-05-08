@@ -2,8 +2,8 @@ package route
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"temppaste/api/route/createpaste"
-	"temppaste/api/route/getpaste"
+	"temppaste/api/route/model/createpaste"
+	"temppaste/api/route/model/getpaste"
 	"temppaste/internal/jsonreturn"
 )
 
