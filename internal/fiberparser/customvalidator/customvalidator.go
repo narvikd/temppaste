@@ -8,10 +8,10 @@ import (
 	entranslation "github.com/go-playground/validator/v10/translations/en"
 )
 
-// Validate accepts a struct and validates it according to its model's tags. It returns a slice of errors.
+// ValidateJSON accepts a struct and validates it according to its model's tags. It returns a slice of errors.
 //
 // When iterating there's no need to check if errors are nil, because it doesn't return empty errors.
-func Validate(s interface{}) []error {
+func ValidateJSON(s interface{}) []error {
 	validate, translator := createNewValidation()
 	registerCustomValidators(validate, translator)
 

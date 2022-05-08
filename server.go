@@ -11,7 +11,7 @@ import (
 	"temppaste/database/paste"
 	"temppaste/internal/app"
 	"temppaste/internal/app/shutdown"
-	"temppaste/internal/fiberparser/fibererrorhandler"
+	"temppaste/internal/fiberparser"
 	"temppaste/pkg/errorskit"
 	"time"
 )
@@ -47,7 +47,7 @@ func newApp(db *memdb.MemDB, publicFolder embed.FS) *app.App {
 			EnablePrintRoutes: false,
 			IdleTimeout:       time.Second * 5, // Max time to wait for the next request when keep-alive is enabled.
 			ErrorHandler: func(ctx *fiber.Ctx, err error) error {
-				return fibererrorhandler.Register(ctx)
+				return fiberparser.RegisterErrorHandler(ctx)
 			},
 		}),
 		DB:           db,

@@ -4,8 +4,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
 	"temppaste/database/paste"
+	"temppaste/internal/fiberparser"
 	"temppaste/internal/fiberparser/customvalidator"
-	"temppaste/internal/fiberparser/fiberbodyparser"
 	"temppaste/internal/jsonreturn"
 	"temppaste/pkg/errorskit"
 )
@@ -13,13 +13,13 @@ import (
 func Create(fiberCtx *fiber.Ctx, DB *memdb.MemDB) (string, *jsonreturn.Model) {
 	model := new(paste.Paste)
 
-	errBodyParser := fiberbodyparser.Parse(fiberCtx, model)
+	errBodyParser := fiberparser.ParseBody(fiberCtx, model)
 	if errBodyParser != nil {
 		return "", jsonreturn.NewModel(
 			fiber.StatusBadRequest, false, errBodyParser.Error(), "",
 		)
 	}
-	errValidateStruct := customvalidator.Validate(model)
+	errValidateStruct := customvalidator.ValidateJSON(model)
 	for _, v := range errValidateStruct {
 		return "", jsonreturn.NewModel(
 			fiber.StatusBadRequest, false, v.Error(), "",

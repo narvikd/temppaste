@@ -1,4 +1,4 @@
-package fiberbodyparser
+package fiberparser
 
 import (
 	"errors"
@@ -10,10 +10,10 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// Parse parses a pointer to a struct with fiber's body parse.
+// ParseBody parses a pointer to a struct with fiber's body parse.
 //
 // It returns custom errors that are not present in the fiber implementation.
-func Parse(fiberCtx *fiber.Ctx, s interface{}) error {
+func ParseBody(fiberCtx *fiber.Ctx, s interface{}) error {
 	const unmarshalTypeErrMsg = "couldn't unmarshal json because an incorrect type was sent"
 	errBodyParser := fiberCtx.BodyParser(s)
 	if errBodyParser != nil {
