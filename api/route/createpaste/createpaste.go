@@ -3,8 +3,8 @@ package createpaste
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
+	"github.com/narvikd/fiberparser"
 	"temppaste/database/paste"
-	"temppaste/internal/fiberparser"
 	"temppaste/internal/jsonreturn"
 	"temppaste/pkg/errorskit"
 )

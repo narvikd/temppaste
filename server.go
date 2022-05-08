@@ -4,6 +4,7 @@ import (
 	"embed"
 	"github.com/gofiber/fiber/v2"
 	"github.com/hashicorp/go-memdb"
+	"github.com/narvikd/fiberparser"
 	"log"
 	"temppaste/api/middleware"
 	"temppaste/api/route"
@@ -11,7 +12,6 @@ import (
 	"temppaste/database/paste"
 	"temppaste/internal/app"
 	"temppaste/internal/app/shutdown"
-	"temppaste/internal/fiberparser"
 	"temppaste/pkg/errorskit"
 	"time"
 )
