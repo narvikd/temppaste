@@ -45,7 +45,9 @@ func newApp(db *memdb.MemDB, publicFolder embed.FS) *app.App {
 		App: fiber.New(fiber.Config{
 			AppName:           "Temp Paste",
 			EnablePrintRoutes: false,
-			IdleTimeout:       time.Second * 5, // Max time to wait for the next request when keep-alive is enabled.
+			IdleTimeout:       time.Second * 5,
+			WriteTimeout:      time.Second * 10,
+			BodyLimit:         5 * 1024 * 1024, // 5MB
 			ErrorHandler: func(ctx *fiber.Ctx, err error) error {
 				return fiberparser.RegisterErrorHandler(ctx)
 			},
