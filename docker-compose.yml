@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  api:
+    image: temppaste:latest
+    container_name: temppaste-api
+    networks:
+      - temppaste
+networks:
+  temppaste:
+    external: false
