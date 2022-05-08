@@ -2,47 +2,33 @@ package route
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"temppaste/database/paste"
+	"temppaste/api/route/createpaste"
+	"temppaste/api/route/getpaste"
 	"temppaste/internal/jsonreturn"
-	"temppaste/internal/parser/customvalidator"
-	"temppaste/internal/parser/fiberbodyparser"
-	"temppaste/pkg/errorskit"
 )
 
 func (a *AppCtx) getPaste(fiberCtx *fiber.Ctx) error {
-	id := fiberCtx.Params("id")
-	if id == "" {
-		return jsonreturn.BadRequest(fiberCtx, "id was empty")
-	}
-
-	p, err := paste.GetPaste(a.DB, id)
+	p, err := getpaste.Get(fiberCtx, a.DB)
 	if err != nil {
-		if err.Error() == "paste not found" {
-			return jsonreturn.NotFound(fiberCtx, err.Error())
-		}
-		errorskit.LogWrap(err, "getPasteRaw endpoint")
-
-		return jsonreturn.ServerError(fiberCtx, "couldn't get paste")
+		return jsonreturn.Make(fiberCtx, err)
 	}
+
+	return jsonreturn.OK(fiberCtx, "paste retrieved successfully", p)
+}
+
+func (a *AppCtx) getPasteRaw(fiberCtx *fiber.Ctx) error {
+	p, err := getpaste.Get(fiberCtx, a.DB)
+	if err != nil {
+		return jsonreturn.Make(fiberCtx, err)
+	}
+
 	return fiberCtx.Status(fiber.StatusOK).SendString(p.Content)
 }
 
 func (a *AppCtx) createPaste(fiberCtx *fiber.Ctx) error {
-	model := new(paste.Paste)
-
-	errBodyParser := fiberbodyparser.Parse(fiberCtx, model)
-	if errBodyParser != nil {
-		return jsonreturn.BadRequest(fiberCtx, errBodyParser.Error())
-	}
-	errValidateStruct := customvalidator.Validate(model)
-	for _, v := range errValidateStruct {
-		return jsonreturn.BadRequest(fiberCtx, v.Error())
-	}
-
-	id, err := paste.NewPaste(a.DB, model)
+	id, err := createpaste.Create(fiberCtx, a.DB)
 	if err != nil {
-		errorskit.LogWrap(err, "createPaste endpoint")
-		return jsonreturn.BadRequest(fiberCtx, "couldn't create paste")
+		return jsonreturn.Make(fiberCtx, err)
 	}
 
 	return jsonreturn.OK(fiberCtx, "paste created", id)

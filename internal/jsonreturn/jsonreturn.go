@@ -10,7 +10,23 @@ type Model struct {
 	Data    interface{}
 }
 
-// Make makes a response from a Model's data
+// NewModel returns a pointer to a new Model. Warning: "data" received as nil will be rewritten to an empty string.
+func NewModel(status int, success bool, message string, data interface{}) *Model {
+	if data == nil {
+		data = ""
+	}
+
+	m := Model{
+		Status:  status,
+		Success: success,
+		Message: message,
+		Data:    data,
+	}
+
+	return &m
+}
+
+// Make makes a response from Model.
 func Make(ctx *fiber.Ctx, model *Model) error {
 	return ctx.Status(model.Status).JSON(&fiber.Map{
 		"success": model.Success,
@@ -23,70 +39,6 @@ func Make(ctx *fiber.Ctx, model *Model) error {
 func OK(ctx *fiber.Ctx, message string, data interface{}) error {
 	return ctx.Status(200).JSON(&fiber.Map{
 		"success": true,
-		"message": message,
-		"data":    data,
-	})
-}
-
-// NotFound returns a not found response with status code 404
-func NotFound(ctx *fiber.Ctx, message string) error {
-	return ctx.Status(404).JSON(&fiber.Map{
-		"success": false,
-		"message": message,
-		"data":    "",
-	})
-}
-
-// BadRequest returns a bad request response with status code http status 400
-func BadRequest(ctx *fiber.Ctx, message string) error {
-	return ctx.Status(400).JSON(&fiber.Map{
-		"success": false,
-		"message": message,
-		"data":    "",
-	})
-}
-
-// BadRequestWithData allows inserting data to return a bad request response with status code http status 400
-func BadRequestWithData(ctx *fiber.Ctx, message string, data interface{}) error {
-	return ctx.Status(400).JSON(&fiber.Map{
-		"success": false,
-		"message": message,
-		"data":    data,
-	})
-}
-
-// DataNotValid returns a data not valid response with status code 422
-func DataNotValid(ctx *fiber.Ctx, message string) error {
-	return ctx.Status(422).JSON(&fiber.Map{
-		"success": false,
-		"message": message,
-		"data":    "",
-	})
-}
-
-// ServerError returns a server error response with status code 500
-func ServerError(ctx *fiber.Ctx, message string) error {
-	return ctx.Status(500).JSON(&fiber.Map{
-		"success": false,
-		"message": message,
-		"data":    "",
-	})
-}
-
-// TooManyRequests returns a response when the rate limiter is triggered
-func TooManyRequests(ctx *fiber.Ctx, requestLimit string) error {
-	msg := "Sorry, we're receiving too many requests from your IP address. Rate limited is " + requestLimit + "req/min"
-	return ctx.Status(429).JSON(&fiber.Map{
-		"success": false,
-		"message": msg,
-		"data":    "",
-	})
-}
-
-// Unauthorised returns a Status Unauthorised status code (401)
-func Unauthorised(ctx *fiber.Ctx, message string, data interface{}) error {
-	return ctx.Status(fiber.StatusUnauthorized).JSON(&fiber.Map{
-		"success": false,
 		"message": message,
 		"data":    data,
 	})

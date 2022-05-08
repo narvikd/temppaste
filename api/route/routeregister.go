@@ -31,6 +31,7 @@ func Register(app *app.App) {
 func routes(app *app.App, route *AppCtx) {
 	loadEmbeddedHome(app)
 	app.Get("paste/:id", route.getPaste)
+	app.Get("paste/:id/raw", route.getPasteRaw)
 	app.Post("paste", route.createPaste)
 }
 
