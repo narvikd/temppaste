@@ -11,7 +11,6 @@ import (
 // Paste represents the table, it also includes validation directives.
 type Paste struct {
 	Id      string `json:"id"`
-	Name    string `json:"name" validate:"required,lte=50"`
 	Content string `json:"content" validate:"required,lte=524288"` // paste byte limit (512 * 1024 = 512kb)
 }
 
