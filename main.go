@@ -1,14 +1,33 @@
 package main
 
 import (
-	"embed"
+	"github.com/gin-gonic/gin"
+	"log"
+	"temppaste/api/route"
+	"temppaste/database"
+	"temppaste/database/paste"
+	"temppaste/internal/app"
+	"temppaste/internal/ginparser"
+	"temppaste/pkg/errorskit"
 	"temppaste/pkg/rng"
 )
 
-//go:embed public/*
-var publicFolder embed.FS
-
 func main() {
 	rng.InitRNG()
-	startFiber(publicFolder)
+	db, errDBInit := database.NewDB(paste.NewSchema())
+	if errDBInit != nil {
+		log.Fatalln(errDBInit)
+	}
+
+	a := app.App{
+		Engine:     gin.Default(),
+		DB:         db,
+		Translator: ginparser.Register(),
+	}
+
+	route.Register(&a)
+	err := a.Run("0.0.0.0:3001")
+	if err != nil {
+		errorskit.LogWrap(err, "couldn't start router")
+	}
 }

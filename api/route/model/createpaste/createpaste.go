@@ -1,31 +1,27 @@
 package createpaste
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
+	ut "github.com/go-playground/universal-translator"
 	"github.com/hashicorp/go-memdb"
-	"github.com/narvikd/fiberparser"
+	"net/http"
 	"temppaste/database/paste"
+	"temppaste/internal/ginparser"
 	"temppaste/internal/jsonreturn"
-	"temppaste/pkg/errorskit"
 )
 
-func Create(fiberCtx *fiber.Ctx, DB *memdb.MemDB) (string, *jsonreturn.Model) {
+func Create(ginCtx *gin.Context, trans ut.Translator, DB *memdb.MemDB) (string, *jsonreturn.Model) {
 	model := new(paste.Paste)
-
-	errParseAndValidate := fiberparser.ParseAndValidate(fiberCtx, model)
-	if errParseAndValidate != nil {
-		return "", jsonreturn.NewModel(
-			fiber.StatusBadRequest, false, errParseAndValidate.Error(), "",
-		)
+	errParse := ginparser.ParseAndValidate(ginCtx, trans, model)
+	if errParse != nil {
+		return "", jsonreturn.NewModel(http.StatusBadRequest, false, errParse.Error(), "")
 	}
 
 	id, err := paste.NewPaste(DB, model)
 	if err != nil {
-		errorskit.LogWrap(err, "createPaste endpoint")
 		return "", jsonreturn.NewModel(
-			fiber.StatusInternalServerError, false, "couldn't create paste", "",
+			http.StatusInternalServerError, false, "couldn't create paste", "",
 		)
 	}
-
 	return id, nil
 }

@@ -1,18 +1,18 @@
 package getpaste
 
 import (
-	"github.com/gofiber/fiber/v2"
+	"github.com/gin-gonic/gin"
 	"github.com/hashicorp/go-memdb"
+	"net/http"
 	"temppaste/database/paste"
 	"temppaste/internal/jsonreturn"
-	"temppaste/pkg/errorskit"
 )
 
-func Get(fiberCtx *fiber.Ctx, DB *memdb.MemDB) (*paste.Paste, *jsonreturn.Model) {
-	id := fiberCtx.Params("id")
+func Get(ginCtx *gin.Context, DB *memdb.MemDB) (*paste.Paste, *jsonreturn.Model) {
+	id := ginCtx.Param("id")
 	if id == "" {
 		return nil, jsonreturn.NewModel(
-			fiber.StatusBadRequest, false, "id was empty", "",
+			http.StatusBadRequest, false, "id was empty", "",
 		)
 	}
 
@@ -20,13 +20,11 @@ func Get(fiberCtx *fiber.Ctx, DB *memdb.MemDB) (*paste.Paste, *jsonreturn.Model)
 	if err != nil {
 		if err.Error() == "paste not found" {
 			return nil, jsonreturn.NewModel(
-				fiber.StatusNotFound, false, err.Error(), "",
+				http.StatusNotFound, false, err.Error(), "",
 			)
 		}
-		errorskit.LogWrap(err, "getPaste endpoint")
-
 		return nil, jsonreturn.NewModel(
-			fiber.StatusInternalServerError, false, "couldn't get paste", "",
+			http.StatusInternalServerError, false, "couldn't get paste", "",
 		)
 	}
 
