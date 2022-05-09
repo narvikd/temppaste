@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
 	"github.com/narvikd/errorskit"
 	"github.com/narvikd/ginparser"
@@ -12,6 +13,9 @@ import (
 	"temppaste/internal/database/paste"
 )
 
+//go:embed public/*
+var publicFolder embed.FS
+
 func main() {
 	gorngseed.Register()
 	db, errDBInit := database.NewDB(paste.NewSchema())
@@ -20,9 +24,10 @@ func main() {
 	}
 
 	a := app.App{
-		Engine:     gin.Default(),
-		DB:         db,
-		Translator: ginparser.Register(),
+		Engine:       gin.Default(),
+		DB:           db,
+		PublicFolder: publicFolder,
+		Translator:   ginparser.Register(),
 	}
 
 	route.Register(&a)

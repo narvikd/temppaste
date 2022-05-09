@@ -1,6 +1,7 @@
 package app
 
 import (
+	"embed"
 	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/hashicorp/go-memdb"
@@ -13,6 +14,7 @@ import (
 // This way the application can avoid the use of global variables.
 type App struct {
 	*gin.Engine
-	DB         *memdb.MemDB
-	Translator ut.Translator
+	DB           *memdb.MemDB
+	PublicFolder embed.FS
+	Translator   ut.Translator
 }
