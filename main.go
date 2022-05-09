@@ -3,17 +3,17 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/narvikd/ginparser"
+	"github.com/narvikd/gorngseed"
 	"log"
 	"temppaste/api/route"
 	"temppaste/database"
 	"temppaste/database/paste"
 	"temppaste/internal/app"
 	"temppaste/pkg/errorskit"
-	"temppaste/pkg/rng"
 )
 
 func main() {
-	rng.InitRNG()
+	gorngseed.Register()
 	db, errDBInit := database.NewDB(paste.NewSchema())
 	if errDBInit != nil {
 		log.Fatalln(errDBInit)

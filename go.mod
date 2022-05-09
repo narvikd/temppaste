@@ -8,6 +8,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.0
 	github.com/hashicorp/go-memdb v1.3.3
 	github.com/narvikd/ginparser v1.0.0
+	github.com/narvikd/gorngseed v1.0.0
 )
 
 require (
