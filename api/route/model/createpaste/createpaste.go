@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	ut "github.com/go-playground/universal-translator"
 	"github.com/hashicorp/go-memdb"
+	"github.com/narvikd/ginparser"
 	"net/http"
 	"temppaste/database/paste"
-	"temppaste/internal/ginparser"
 	"temppaste/internal/jsonreturn"
 )
 
