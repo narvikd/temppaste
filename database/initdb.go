@@ -2,7 +2,7 @@ package database
 
 import (
 	"github.com/hashicorp/go-memdb"
-	"temppaste/pkg/errorskit"
+	"github.com/narvikd/errorskit"
 )
 
 // NewDB accepts a DB schema and returns a new DB object.

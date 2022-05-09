@@ -58,6 +58,8 @@ github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd/go.mod h1:6dJ
 github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3RllmbCylyMrvgv0=
 github.com/modern-go/reflect2 v1.0.2 h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9Gz0M=
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
+github.com/narvikd/errorskit v1.0.0 h1:BF5vR8hyLwxIBml1RJgwZrUF1mIXVw/4PN//iBYvI58=
+github.com/narvikd/errorskit v1.0.0/go.mod h1:n6YdCJM6tn/5w8x3kjpFSW7cVBLrSgsNOhi3n6Y9roI=
 github.com/narvikd/ginparser v1.0.0 h1:5lhfW+i1unjOb78DFSTu+2kBOaHjndQcX6FlGC5dgPo=
 github.com/narvikd/ginparser v1.0.0/go.mod h1:mKpzHe3yA+mkKZjnfdvqAekKGCqabkIKlaLy6zLnepw=
 github.com/narvikd/gorngseed v1.0.0 h1:H41TEJXaj9iwJKxy80MEA3RVGqEx/3hVWINRMnggwkc=

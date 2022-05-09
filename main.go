@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/narvikd/errorskit"
 	"github.com/narvikd/ginparser"
 	"github.com/narvikd/gorngseed"
 	"log"
@@ -9,7 +10,6 @@ import (
 	"temppaste/database"
 	"temppaste/database/paste"
 	"temppaste/internal/app"
-	"temppaste/pkg/errorskit"
 )
 
 func main() {
@@ -28,6 +28,6 @@ func main() {
 	route.Register(&a)
 	err := a.Run("0.0.0.0:3001")
 	if err != nil {
-		errorskit.LogWrap(err, "couldn't start router")
+		errorskit.FatalWrap(err, "couldn't start router")
 	}
 }

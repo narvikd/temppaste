@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/dchest/uniuri"
 	"github.com/hashicorp/go-memdb"
-	"temppaste/pkg/errorskit"
+	"github.com/narvikd/errorskit"
 	"time"
 )
 

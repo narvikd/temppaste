@@ -7,6 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/universal-translator v0.18.0
 	github.com/hashicorp/go-memdb v1.3.3
+	github.com/narvikd/errorskit v1.0.0
 	github.com/narvikd/ginparser v1.0.0
 	github.com/narvikd/gorngseed v1.0.0
 )
