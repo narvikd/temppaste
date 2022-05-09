@@ -1,4 +1,4 @@
-package jsonreturn
+package jsonresponse
 
 import (
 	"github.com/gin-gonic/gin"

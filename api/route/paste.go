@@ -5,23 +5,23 @@ import (
 	"net/http"
 	"temppaste/api/route/model/createpaste"
 	"temppaste/api/route/model/getpaste"
-	"temppaste/internal/jsonreturn"
+	"temppaste/internal/jsonresponse"
 )
 
 func (a *AppCtx) GetPaste(ginCtx *gin.Context) {
 	p, err := getpaste.Get(ginCtx, a.DB)
 	if err != nil {
-		jsonreturn.Make(ginCtx, err)
+		jsonresponse.Make(ginCtx, err)
 		return
 	}
 
-	jsonreturn.OK(ginCtx, "paste retrieved successfully", p)
+	jsonresponse.OK(ginCtx, "paste retrieved successfully", p)
 }
 
 func (a *AppCtx) getPasteRaw(ginCtx *gin.Context) {
 	p, err := getpaste.Get(ginCtx, a.DB)
 	if err != nil {
-		jsonreturn.Make(ginCtx, err)
+		jsonresponse.Make(ginCtx, err)
 		return
 	}
 
@@ -31,9 +31,9 @@ func (a *AppCtx) getPasteRaw(ginCtx *gin.Context) {
 func (a *AppCtx) CreatePaste(ginCtx *gin.Context) {
 	id, err := createpaste.Create(ginCtx, a.Translator, a.DB)
 	if err != nil {
-		jsonreturn.Make(ginCtx, err)
+		jsonresponse.Make(ginCtx, err)
 		return
 	}
 
-	jsonreturn.OK(ginCtx, "paste created", id)
+	jsonresponse.OK(ginCtx, "paste created", id)
 }

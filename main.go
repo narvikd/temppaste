@@ -7,9 +7,9 @@ import (
 	"github.com/narvikd/gorngseed"
 	"log"
 	"temppaste/api/route"
-	"temppaste/database"
-	"temppaste/database/paste"
 	"temppaste/internal/app"
+	"temppaste/internal/database"
+	"temppaste/internal/database/paste"
 )
 
 func main() {
