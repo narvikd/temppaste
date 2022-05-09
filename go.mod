@@ -3,8 +3,8 @@ module temppaste
 go 1.18
 
 require (
+	github.com/dchest/uniuri v0.0.0-20200228104902-7aecb25e1fe5
 	github.com/gofiber/fiber/v2 v2.33.0
-	github.com/google/uuid v1.3.0
 	github.com/hashicorp/go-memdb v1.3.3
 	github.com/narvikd/fiberparser v1.0.1
 )

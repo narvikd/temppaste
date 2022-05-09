@@ -2,7 +2,7 @@ package paste
 
 import (
 	"errors"
-	"github.com/google/uuid"
+	"github.com/dchest/uniuri"
 	"github.com/hashicorp/go-memdb"
 	"temppaste/pkg/errorskit"
 	"time"
@@ -48,18 +48,22 @@ func GetPaste(db *memdb.MemDB, id string) (*Paste, error) {
 // NewPaste accepts a Paste pointer to create a new paste in the DB.
 func NewPaste(db *memdb.MemDB, paste *Paste) (string, error) {
 	const pasteDelTime = 5 * time.Minute
-	id := uuid.New().String()
+	id := genPasteID()
 	paste.Id = id // Sets the ID
 
 	txn := db.Txn(true) // Create a read transaction
 	err := txn.Insert("paste", paste)
 	if err != nil {
-		return id, errorskit.Wrap(err, "couldn't insert paste")
+		return "", errorskit.Wrap(err, "couldn't insert paste")
 	}
 	txn.Commit()
 
 	deletePasteAfterTime(db, paste, pasteDelTime)
 	return id, nil
+}
+
+func genPasteID() string {
+	return uniuri.NewLen(5)
 }
 
 // deletePasteAfterTime wraps DeletePaste in a go func to delete the just created paste after X time.

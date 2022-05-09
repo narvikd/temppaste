@@ -1,6 +1,6 @@
 function newPaste() {
     const paste = document.querySelector("textarea").value;
-    fetch("/paste", {
+    fetch("/p", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -18,7 +18,7 @@ function newPaste() {
             if (data.success === false) {
                 displayErr(data.message)
             } else {
-                window.location.href= `/paste/${data.data}/raw`;
+                window.location.href= `/p/${data.data}/raw`;
             }
         })
         .catch((e) => {
