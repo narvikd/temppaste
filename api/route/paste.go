@@ -8,7 +8,7 @@ import (
 	"temppaste/internal/jsonresponse"
 )
 
-func (a *AppCtx) GetPaste(ginCtx *gin.Context) {
+func (a *AppCtx) getPaste(ginCtx *gin.Context) {
 	p, err := getpaste.Get(ginCtx, a.DB)
 	if err != nil {
 		jsonresponse.Make(ginCtx, err)
@@ -28,7 +28,7 @@ func (a *AppCtx) getPasteRaw(ginCtx *gin.Context) {
 	ginCtx.String(http.StatusOK, p.Content)
 }
 
-func (a *AppCtx) CreatePaste(ginCtx *gin.Context) {
+func (a *AppCtx) createPaste(ginCtx *gin.Context) {
 	id, err := createpaste.Create(ginCtx, a.Translator, a.DB)
 	if err != nil {
 		jsonresponse.Make(ginCtx, err)

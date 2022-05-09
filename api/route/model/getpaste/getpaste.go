@@ -8,6 +8,7 @@ import (
 	"temppaste/internal/jsonresponse"
 )
 
+// Get handles JSON validations for the request, it returns a *jsonresponse.Model for easy return to the client.
 func Get(ginCtx *gin.Context, DB *memdb.MemDB) (*paste.Paste, *jsonresponse.Model) {
 	id := ginCtx.Param("id")
 	if id == "" {

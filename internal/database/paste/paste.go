@@ -14,6 +14,7 @@ type Paste struct {
 	Content string `json:"content" binding:"required,lte=524288"` // paste byte limit (512 * 1024 = 512kb)
 }
 
+// NewSchema returns a memdb.DBSchema for "paste" with id as field index schema.
 func NewSchema() *memdb.DBSchema {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
@@ -32,6 +33,7 @@ func NewSchema() *memdb.DBSchema {
 	return schema
 }
 
+// GetPaste returns a paste if it exists.
 func GetPaste(db *memdb.MemDB, id string) (*Paste, error) {
 	txn := db.Txn(false) // Create a read transaction
 	defer txn.Abort()    // Aborts in case of an error
@@ -54,6 +56,7 @@ func NewPaste(db *memdb.MemDB, paste *Paste) (string, error) {
 	txn := db.Txn(true) // Create a read transaction
 	err := txn.Insert("paste", paste)
 	if err != nil {
+		// TODO: return a different error if the paste already exists
 		return "", errorskit.Wrap(err, "couldn't insert paste")
 	}
 	txn.Commit()
@@ -63,6 +66,7 @@ func NewPaste(db *memdb.MemDB, paste *Paste) (string, error) {
 }
 
 func genPasteID() string {
+	// 10 seems to be the good spot, no collisions have been detected for 10 million iterations.
 	return uniuri.NewLen(5)
 }
 

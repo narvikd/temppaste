@@ -12,15 +12,15 @@ type embedFileSystem struct {
 	http.FileSystem
 }
 
+// Exists returns a bool if the path exists inside the filesystem.
+//
+// Warning: Signature must not be changed, it's necessary for implementing the gin static's "ServeFileSystem" interface.
 func (e embedFileSystem) Exists(prefix string, path string) bool {
 	_, err := e.Open(path)
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
-func EmbedFolder(fsEmbed embed.FS, targetPath string) static.ServeFileSystem {
+func embedFolder(fsEmbed embed.FS, targetPath string) static.ServeFileSystem {
 	fsys, err := fs.Sub(fsEmbed, targetPath)
 	if err != nil {
 		panic(err)
@@ -30,6 +30,16 @@ func EmbedFolder(fsEmbed embed.FS, targetPath string) static.ServeFileSystem {
 	}
 }
 
+// NewHandler returns a new gin.HandlerFunc capable of serving a dir inside embed.FS
+//
+// This solves triggering Gin's wildcard bug:
+//
+// "conflicts with existing wildcard '/*filepath' in existing prefix '/*filepath'"
+//
+// More info:
+//
+// https://stackoverflow.com/a/68613803 https://github.com/gin-gonic/gin/issues/360
+// https://github.com/gin-contrib/static/issues/19
 func NewHandler(route string, fsPath string, fs embed.FS) gin.HandlerFunc {
-	return static.Serve(route, EmbedFolder(fs, fsPath))
+	return static.Serve(route, embedFolder(fs, fsPath))
 }

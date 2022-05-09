@@ -10,6 +10,7 @@ import (
 	"temppaste/internal/jsonresponse"
 )
 
+// Create handles JSON validations for the request, it returns a *jsonresponse.Model for easy return to the client.
 func Create(ginCtx *gin.Context, trans ut.Translator, DB *memdb.MemDB) (string, *jsonresponse.Model) {
 	model := new(paste.Paste)
 	errParse := ginparser.ParseAndValidate(ginCtx, trans, model)

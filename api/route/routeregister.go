@@ -34,7 +34,7 @@ func routes(app *app.App, route *AppCtx) {
 	app.Use(
 		ginembedfs.NewHandler("/", "public", app.PublicFolder),
 	)
-	app.GET("/p/:id", route.GetPaste)
+	app.GET("/p/:id", route.getPaste)
 	app.GET("/p/:id/raw", route.getPasteRaw)
-	app.POST("/p", route.CreatePaste)
+	app.POST("/p", route.createPaste)
 }
