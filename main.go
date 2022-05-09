@@ -16,6 +16,10 @@ import (
 //go:embed public/*
 var publicFolder embed.FS
 
+func init() {
+	gin.SetMode(gin.ReleaseMode)
+}
+
 func main() {
 	gorngseed.Register()
 	db, errDBInit := database.NewDB(paste.NewSchema())
