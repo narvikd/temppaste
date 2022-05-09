@@ -2,16 +2,17 @@ package route
 
 import (
 	"embed"
-	"github.com/gofiber/fiber/v2/middleware/filesystem"
+	ut "github.com/go-playground/universal-translator"
 	"github.com/hashicorp/go-memdb"
-	"net/http"
 	"temppaste/internal/app"
+	"temppaste/internal/ginembedfs"
 )
 
 // AppCtx is a simple struct to include a collection of tools that a route could need to operate, for example a *memdb.MemDB.
 type AppCtx struct {
 	DB           *memdb.MemDB
 	PublicFolder embed.FS
+	Translator   ut.Translator
 }
 
 // newRouteCtx returns a pointer of a new instance of AppCtx.
@@ -19,29 +20,21 @@ func newRouteCtx(app *app.App) *AppCtx {
 	routeCtx := AppCtx{
 		DB:           app.DB,
 		PublicFolder: app.PublicFolder,
+		Translator:   app.Translator,
 	}
 	return &routeCtx
 }
 
-// Register registers fiber's routes.
+// Register registers Gin's routes.
 func Register(app *app.App) {
 	routes(app, newRouteCtx(app))
 }
 
 func routes(app *app.App, route *AppCtx) {
-	loadEmbeddedHome(app)
-	app.Get("p/:id", route.getPaste)
-	app.Get("p/:id/raw", route.getPasteRaw)
-	app.Post("p", route.createPaste)
-}
-
-func loadEmbeddedHome(app *app.App) {
-	app.Use("/", filesystem.New(filesystem.Config{
-		Root:         http.FS(app.PublicFolder),
-		Browse:       true,
-		PathPrefix:   "/public",
-		Index:        "index.html",
-		NotFoundFile: "index.html",
-		MaxAge:       3600,
-	}))
+	app.Use(
+		ginembedfs.NewHandler("/", "public", app.PublicFolder),
+	)
+	app.GET("/p/:id", route.GetPaste)
+	app.GET("/p/:id/raw", route.getPasteRaw)
+	app.POST("/p", route.CreatePaste)
 }

@@ -4,14 +4,14 @@ import (
 	"errors"
 	"github.com/dchest/uniuri"
 	"github.com/hashicorp/go-memdb"
-	"temppaste/pkg/errorskit"
+	"github.com/narvikd/errorskit"
 	"time"
 )
 
 // Paste represents the table, it also includes validation directives.
 type Paste struct {
 	Id      string `json:"id"`
-	Content string `json:"content" validate:"required,lte=524288"` // paste byte limit (512 * 1024 = 512kb)
+	Content string `json:"content" binding:"required,lte=524288"` // paste byte limit (512 * 1024 = 512kb)
 }
 
 func NewSchema() *memdb.DBSchema {

@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   web:
-    image: temppaste:latest
+    image: narvikd/temppaste:latest
     container_name: temppaste
     networks:
       - temppaste
