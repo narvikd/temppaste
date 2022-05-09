@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/narvikd/ginparser"
 	"log"
 	"temppaste/api/route"
 	"temppaste/database"
 	"temppaste/database/paste"
 	"temppaste/internal/app"
-	"temppaste/internal/ginparser"
 	"temppaste/pkg/errorskit"
 	"temppaste/pkg/rng"
 )
